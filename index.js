@@ -6,13 +6,13 @@ const app = express();
 
 app.use(express.json());
 
-const costumers = [];
+const custumers = [];
 
 //Middleware
 function verifyIfExistsAccountCPF(request, response, next) {
     const { cpf } = request.headers
 
-    const customer = costumers.find((customer) => customer.cpf === cpf);
+    const customer = custumers.find((customer) => customer.cpf === cpf);
 
     if (!customer) {
         return response.status(400).json({
@@ -47,17 +47,17 @@ app.post("/account", (request, response) => {
     const { cpf, name } = request.body;
     const id = uuidv4();
 
-    const costumersAlreadyExists = costumers.some(
+    const custumersAlreadyExists = custumers.some(
         (costumer) => costumer.cpf === cpf
     )
 
-    if (costumersAlreadyExists) {
+    if (custumersAlreadyExists) {
         return response.status(400).json({
-            "error": "Costumers already exists"
+            "error": "Customers already exists"
         })
     } 
 
-    costumers.push({
+    custumers.push({
         cpf,
         name,
         id,
@@ -142,5 +142,12 @@ app.get("/account", verifyIfExistsAccountCPF, (request, response) => {
     return response.json(customer)
 })
 
+app.delete("/account", verifyIfExistsAccountCPF, (request, response) => {
+    const { customer } = request
+
+    customers
+
+    return response.json(customer)
+})
 
 app.listen(3333)
